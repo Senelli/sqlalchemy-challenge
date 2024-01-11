@@ -101,7 +101,6 @@ def trip1(start):
     
     return jsonify(trip)
 
-#########################################################################################
 @app.route("/api/v1.0/<start>/<end>")
 def trip2(start,end):
 
