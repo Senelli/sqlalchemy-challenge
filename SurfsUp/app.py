@@ -89,31 +89,31 @@ def tobs():
     return jsonify(temperatures)
 
 @app.route("/api/v1.0/<start>")
-def trip1(start):
+def starts(start):
 
-     # go back one year from start date and go to end of data for Min/Avg/Max temp   
-    start = dt.datetime.strptime(start, '%Y-%m-%d')
-    trip_data = session.query(func.min(Measurements.tobs), func.avg(Measurements.tobs), func.max(Measurements.tobs)).\
-        filter(Measurements.date >= start).all()
+     # Returns the min, max, and average temperatures calculated from the given start date to the end of the dataset   
+    start_date = dt.datetime.strptime(start, '%Y-%m-%d')
+    results = session.query(func.min(Measurements.tobs), func.avg(Measurements.tobs), func.max(Measurements.tobs)).\
+        filter(Measurements.date >= start_date).all()
     
-    trip = list(np.ravel(trip_data))
+    starting = list(np.ravel(results))
     session.close()
     
-    return jsonify(trip)
+    return jsonify(starting)
 
 @app.route("/api/v1.0/<start>/<end>")
-def trip2(start,end):
+def ends(start,end):
 
-      # go back one year from start/end date and get Min/Avg/Max temp     
-    start= dt.datetime.strptime(start, '%Y-%m-%d')
-    end= dt.datetime.strptime(end,'%Y-%m-%d')
-    trip_data = session.query(func.min(Measurements.tobs), func.avg(Measurements.tobs), func.max(Measurements.tobs)).\
-        filter(Measurements.date >= start).filter(Measurements.date <= end).all()
+    # Returns the min, max, and average temperatures calculated from the given start date to the given end date     
+    start_date = dt.datetime.strptime(start, '%Y-%m-%d')
+    end_date = dt.datetime.strptime(end,'%Y-%m-%d')
+    results = session.query(func.min(Measurements.tobs), func.avg(Measurements.tobs), func.max(Measurements.tobs)).\
+        filter(Measurements.date >= start_date).filter(Measurements.date <= end_date).all()
     
-    trip = list(np.ravel(trip_data))
+    ending = list(np.ravel(results))
     session.close()
     
-    return jsonify(trip)
+    return jsonify(ending)
 
 
 
